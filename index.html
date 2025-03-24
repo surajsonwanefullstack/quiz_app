@@ -8,22 +8,19 @@
 </head>
 <body>
     <div class="container">
-        <div class="home_page hide">
+        <div class="home_page">
         <p class="title"> Quiz Application</p>
         <img src="images/quiz.png" alt="logo">
         <p class="greet">Welcome!</p>
         <input type="text" id="username" placeholder="Enter your name">
-        <button id="userAddButton">Enter</button>
+        <button id="userAddButton" onclick="addUser()">Enter</button>
+        <p>Please select quiz </p>
         <ul class="catagory" id="quizChoices">
-            <li class="selected">html</li>
-            <li>css</li>
-            <li>javascript</li>
-            <li>reactjs</li>
         </ul>
-        <button id="startQuizButton">Start</button>
+        <button id="startQuizButton" onclick="startQuiz()">Start</button>
 
         </div>
-        <div class="quiz_page hide">
+        <div class="quiz_page">
             <p class="title"> HTML QUIZ </p>
             <div class="info">
                 <p class="timers">Remaing Time : 10</p>
@@ -42,25 +39,27 @@
             </ul>
                 
             <div class="buttonContainer">
-                <button id="nextButton">Next</button>
-                <button id="submitButton">Submit</button>
+                <button id="nextButton" onclick="nextQuestion()">Next</button>
+                <button id="submitButton" onclick="submitQuiz()">Submit</button>
             </div>
             
         </div>
-        <div class="result_page show">
+        <div class="result_page">
             <p class="title">Quiz Result</p>
             <p><span class="username">User </span>Your result is:</p>
             <p>Total Question:<span class="total_questions">10</span></p>
             <p>Attempted Question:<span class="attempted_questions">10</span></p>
-            <p>Correct answers:<span class="total_questions">10</span></p>
-            <p>Incorrect Answers:<span class="total_questions">10</span></p>
-            <p>Percentage:<span class="percentage">100%</span></p>
+            <p>Correct answers:<span class="correct_answers">10</span></p>
+            <p>Incorrect Answers:<span class="incorrect_answers">10</span></p>
+            <p>Percentage:<span class="percentage"></span></p>
             
             <div class="buttonContainer">
-                <button id="playAgainButton">Play Again</button>
-            <button id="viewHighScoreButton">View High Scores</button>
+                <button id="playAgainButton" onclick="restartQuiz()">Restart Quiz</button>
+            <button id="viewHighScoreButton">Home Page</button>
             </div>
         </div>
     </div>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
