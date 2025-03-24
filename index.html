@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizApp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="home_page hide">
+        <p class="title"> Quiz Application</p>
+        <img src="images/quiz.png" alt="logo">
+        <p class="greet">Welcome!</p>
+        <input type="text" id="username" placeholder="Enter your name">
+        <button id="userAddButton">Enter</button>
+        <ul class="catagory" id="quizChoices">
+            <li class="selected">html</li>
+            <li>css</li>
+            <li>javascript</li>
+            <li>reactjs</li>
+        </ul>
+        <button id="startQuizButton">Start</button>
+
+        </div>
+        <div class="quiz_page hide">
+            <p class="title"> HTML QUIZ </p>
+            <div class="info">
+                <p class="timers">Remaing Time : 10</p>
+                <p class="score">Score : 0</p>
+                <p class="questionNumber">(1/10)</p>
+            </div>
+            
+            <p class="question">What is Html stands for?</p>
+            <ul class="catagory" id="answerChoices">
+                <li>Hyper Text Markup Language</li>
+                <li class="selected">Hyper Text Transfer Protocol</li>
+                <li>Hyper Text Markup Language</li>
+                <li>Hyper Text Transfer Protocol</li>
+
+
+            </ul>
+                
+            <div class="buttonContainer">
+                <button id="nextButton">Next</button>
+                <button id="submitButton">Submit</button>
+            </div>
+            
+        </div>
+        <div class="result_page show">
+            <p class="title">Quiz Result</p>
+            <p><span class="username">User </span>Your result is:</p>
+            <p>Total Question:<span class="total_questions">10</span></p>
+            <p>Attempted Question:<span class="attempted_questions">10</span></p>
+            <p>Correct answers:<span class="total_questions">10</span></p>
+            <p>Incorrect Answers:<span class="total_questions">10</span></p>
+            <p>Percentage:<span class="percentage">100%</span></p>
+            
+            <div class="buttonContainer">
+                <button id="playAgainButton">Play Again</button>
+            <button id="viewHighScoreButton">View High Scores</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
