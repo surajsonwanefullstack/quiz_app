@@ -1,5 +1,5 @@
 
-const user = {}
+let user = {}
 const quiz_list = quizCategory.map(quiz => quiz.quiz_name)
 console.log(quiz_list)
 let current_quiz = null
@@ -12,9 +12,6 @@ let selectedAnswer = null
 let correctAnswer = null
 
 // homePage.classList.add("hide")
-quizPage.classList.add("hide")
-resultPage.classList.add("hide")
-
 console.log(homePage, quizPage, resultPage)
 document.addEventListener("DOMContentLoaded", function () {
     // homePage.classList.add("hide")
@@ -49,18 +46,18 @@ function selectQuizOption(event) {
 
 
 // displaying quiz catagory
-const quizChoices =  document.querySelector("#quizChoices")
+const quizChoices = document.querySelector("#quizChoices")
 quiz_list.forEach(quiz => {
     const li = document.createElement("li")
     li.innerText = quiz
     quizChoices.appendChild(li)
-    li.addEventListener("click", (event)=>selectQuizOption(event))
+    li.addEventListener("click", (event) => selectQuizOption(event))
 })
 
 // starting quiz
 let quiz = null;
 let curretQuestion = null
-let currentQuiz  = null
+let currentQuiz = null
 function startQuiz() {
     if (!user.current_quiz) {
         alert("Please select a quiz")
@@ -69,76 +66,85 @@ function startQuiz() {
     quiz = quizCategory.find(q => q.quiz_name === current_quiz)
     user.quiz_total_questions = quiz.questions.length
     console.log(quiz)
-    document.querySelector(".quiz_page").classList.add("show")
+    // document.querySelector(".quiz_page").classList.add("show")
     // document.querySelector(".home_page").classList.add("hide")
     // resultPage.classList.add("hide")
     // homePage.classList.add("hide")
+    homePage.classList.remove("show")
+    resultPage.classList.remove("show")
+    quizPage.classList.add("show")
 
     currentQuiz = quiz.questions
 
     showQuizPage()
 }
 let score = 0
-    let correct = 0
-    let attempted = 0
-    let wrong = 0
-function nextQuestion(){
-    if(!selectedAnswer){
-        alert("Please select an answer")
+let correct = 0
+let attempted = 0
+let wrong = 0
+function nextQuestion() {
+    
+    if (!correctAnswer) {
+        alert("please select annswer")
         return
     }
-    if(selectedAnswer === correctAnswer){
+    if (selectedAnswer === correctAnswer) {
         console.log("Correct!")
-        score+=1
-        correct+=1
-        attempted+=1
+        score += 1
+        correct += 1
+        attempted += 1
     }
-    else{
+    else {
         console.log("Wrong!")
-        attempted+=1
-        wrong+= 1
+        attempted += 1
+        wrong += 1
     }
-    console.log("Score: ", {score, correct, attempted, wrong,correctAnswer,selectedAnswer}),
+    console.log("Score: ", { score, correct, attempted, wrong, correctAnswer, selectedAnswer })
 
     correctAnswer = null
     selectedAnswer = null
+    if (currentQuiz.length == 0) {
+        showResultPage()
+        return
+    }
+
     showQuizPage()
 
 }
 
-function submitQuiz(){
-    if(!selectedAnswer){
+function submitQuiz() {
+    if (!selectedAnswer) {
         showResultPage()
     }
-    else if(selectedAnswer === correctAnswer){
-        score+=1
-        correct+=1
-        attempted+=1
+    else if (selectedAnswer === correctAnswer) {
+        score += 1
+        correct += 1
+        attempted += 1
     }
-    else{
-        attempted+=1
-        wrong+1
+    else {
+        attempted += 1
+        wrong + 1
     }
     selectedAnswer = null
     correctAnswer = null
     showResultPage()
 }
 let count = 0
-function showQuizPage(){
-    
+function showQuizPage() {
+
     const quesion = currentQuiz.shift()
     curretQuestion = quesion
-    if(curretQuestion==undefined){
+    if (curretQuestion == undefined) {
         showResultPage()
-        return 
+        return
     }
     count += 1
     document.querySelector(".questionNumber").innerText = count + "/" + user.quiz_total_questions
     correctAnswer = quesion.answer
-    if(currentQuiz.length==1){
+    if (currentQuiz.length == 1) {
         console.log("last question")
     }
-    console.log("length"+currentQuiz.length)
+    console.log("length" + currentQuiz.length)
     console.log(quesion.question)
     document.querySelector(".score").innerText = "Score: " + score
 
@@ -148,7 +154,7 @@ function showQuizPage(){
         const li = document.createElement("li")
         li.innerText = answer
         document.querySelector("#answerChoices").appendChild(li)
-        li.addEventListener("click",function(event){
+        li.addEventListener("click", function (event) {
             const selected = document.querySelector(".selected")
             if (selected) {
                 selected.classList.remove("selected")
@@ -160,24 +166,27 @@ function showQuizPage(){
 
 }
 
-function showResultPage(){
+function showResultPage() {
     console.log(user)
-    console.log(quiz.questions)
-    homePage.classList.add("hide")
-    quizPage.classList.add("hide")
-    resultPage.classList.remove("hide")
-document.querySelector(".username").innerText = user.name
-document.querySelector(".total_questions").innerText = user.quiz_total_questions
-document.querySelector(".attempted_questions").innerText = attempted
-document.querySelector(".correct_answers").innerText = correct
-document.querySelector(".incorrect_answers").innerText = wrong 
-document.querySelector(".attempted_questions").innerText = attempted
-document.querySelector(".percentage").innerText = Math.round((correct / user.quiz_total_questions)*100) + "%"
+    console.log(quiz)
+    console.log({attempted,correct,wrong,attempted})
+ 
+    homePage.classList.remove("show")
+    quizPage.classList.remove("show")
+    resultPage.classList.add("show")
+ 
+    document.querySelector(".username").innerText = user.name
+    document.querySelector(".total_questions").innerText = user.quiz_total_questions
+    document.querySelector(".attempted_questions").innerText = attempted
+    document.querySelector(".correct_answers").innerText = correct
+    document.querySelector(".incorrect_answers").innerText = wrong
+    document.querySelector(".attempted_questions").innerText = attempted
+    document.querySelector(".percentage").innerText = Math.round((correct / user.quiz_total_questions) * 100) + "%"
 }
 
 
 
-function restartQuiz(){
+function restartQuiz() {
     selectedAnswer = null
     correctAnswer = null
     score = 0
@@ -185,5 +194,21 @@ function restartQuiz(){
     attempted = 0
     wrong = 0
     count = 0
-    startQuiz()  
+    resultPage.classList.remove("show")
+    quizPage.classList.add("show")
+    startQuiz()
+
+}
+
+function goHome() {
+    selectedAnswer = null
+    correctAnswer = null
+    score = 0
+    correct = 0
+    attempted = 0
+    wrong = 0
+    count = 0
+    user = {}
+    resultPage.classList.remove("show")
+    quizPage.classList.remove("show")
 }
