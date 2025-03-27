@@ -1,9 +1,12 @@
+// import quizCategory from "./data";
 
+document.querySelector('#username').value = ""
+document.querySelector("#quizTitle").innerText = ""
 let user = {}
 const quiz_list = quizCategory.map(quiz => quiz.quiz_name)
-console.log(quiz_list)
+// console.log(quiz_list)
 let current_quiz = null
-console.log(quizCategory)
+// console.log(quizCategory)
 
 const homePage = document.querySelector(".home_page")
 const quizPage = document.querySelector(".quiz_page")
@@ -11,8 +14,32 @@ const resultPage = document.querySelector(".result_page")
 let selectedAnswer = null
 let correctAnswer = null
 
+
+let countdown = 0
+function startTimerAndSubmit() {
+    countdown = 10; // 10 seconds timer
+
+    // Display countdown
+    // const timerElement = document.querySelector(".timer");
+    // timerElement.textContent = `Time remaining: ${countdown} seconds`;
+
+    const timer = setInterval(() => {
+        countdown--; // Decrease the timer by 1 second
+        // timerElement.textContent = `Time remaining: ${countdown} seconds`;
+        console.log(countdown)
+        // When countdown reaches 0, submit the question
+        if (countdown <= 0) {
+            clearInterval(timer); // Clear the interval
+        }
+    }, 1000); // Update every second
+
+    // Function to simulate the question submission
+    // nextQuestion()
+    console.log("countdown", countdown);
+}
+
 // homePage.classList.add("hide")
-console.log(homePage, quizPage, resultPage)
+// console.log(homePage, quizPage, resultPage)
 document.addEventListener("DOMContentLoaded", function () {
     // homePage.classList.add("hide")
     // quizPage.classList.remove("hide")
@@ -20,15 +47,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 function addUser() {
-    const newUser = document.getElementById("username")
-    if (newUser.value == "") {
+    let newUser = document.getElementById("username").value
+    if (newUser === "") {
         alert("please enter a username")
         return
     }
-    user.name = newUser.value.trim().toLowerCase()
+    user.name = newUser.trim().toLowerCase()
     document.querySelector(".greet").innerHTML = `Welcome, ${user.name}!`
-    newUser.value = ""
-    console.log(user)
+    newUser = ""
+    // console.log(user)
 
 }
 
@@ -58,23 +85,26 @@ quiz_list.forEach(quiz => {
 let quiz = null;
 let curretQuestion = null
 let currentQuiz = null
+
 function startQuiz() {
-    if (!user.current_quiz) {
-        alert("Please select a quiz")
+    if (!user.current_quiz || !user.name) {
+        alert("Please select a quiz and username")
         return
     }
-    quiz = quizCategory.find(q => q.quiz_name === current_quiz)
+    quiz = quizCategory.find(q => q.quiz_name === user.current_quiz)
     user.quiz_total_questions = quiz.questions.length
-    console.log(quiz)
-    // document.querySelector(".quiz_page").classList.add("show")
-    // document.querySelector(".home_page").classList.add("hide")
-    // resultPage.classList.add("hide")
-    // homePage.classList.add("hide")
+document.querySelector("#quizTitle").innerHTML = `<span>
+    ${user.current_quiz.toUpperCase()}</span>`
+    
+    // console.log(quizCategory)
+    // console.log(quiz)
+   
     homePage.classList.remove("show")
-    resultPage.classList.remove("show")
+    // homePage.classList.add("hide")
     quizPage.classList.add("show")
 
-    currentQuiz = quiz.questions
+    currentQuiz = [...quiz.questions]
+    // console.log(currentQuiz)
 
     showQuizPage()
 }
@@ -82,23 +112,34 @@ let score = 0
 let correct = 0
 let attempted = 0
 let wrong = 0
+let timer;
 function nextQuestion() {
-    
-    if (!correctAnswer) {
-        alert("please select annswer")
-        return
+    // if(countdown<0){
+    //     nextQuestion()
+    // }
+    clearInterval(timer)
+    if (!correctAnswer || !correctAnswer) {
+        alert("please select answer")
+
     }
-    if (selectedAnswer === correctAnswer) {
-        console.log("Correct!")
-        score += 1
-        correct += 1
-        attempted += 1
+    if(selectedAnswer && correctAnswer) {
+        if (selectedAnswer === correctAnswer) {
+            console.log("Correct!")
+            score += 1
+            correct += 1
+            attempted += 1
+        }
+        else if(selectedAnswer!==correctAnswer) {
+            console.log("Wrong!")
+            attempted += 1
+            wrong += 1
+        }
+        else
+        {
+            console.log("You havn't select answer!")
+        }
     }
-    else {
-        console.log("Wrong!")
-        attempted += 1
-        wrong += 1
-    }
+
     console.log("Score: ", { score, correct, attempted, wrong, correctAnswer, selectedAnswer })
 
     correctAnswer = null
@@ -131,10 +172,11 @@ function submitQuiz() {
 }
 let count = 0
 function showQuizPage() {
-
+    // startTimerAndSubmit()
+    startTimerAndSubmit()
     const quesion = currentQuiz.shift()
     curretQuestion = quesion
-    if (curretQuestion == undefined) {
+    if (curretQuestion.length == 0) {
         showResultPage()
         return
     }
@@ -144,10 +186,10 @@ function showQuizPage() {
     if (currentQuiz.length == 1) {
         console.log("last question")
     }
-    console.log("length" + currentQuiz.length)
+    // console.log("length" + currentQuiz.length)
     console.log(quesion.question)
     document.querySelector(".score").innerText = "Score: " + score
-
+    document.querySelector(".result_page").classList.remove("show")
     document.querySelector(".question").innerText = quesion.question
     const amswerChoices = document.querySelector("#answerChoices").innerHTML = ""
     quesion.answers.forEach(answer => {
@@ -164,17 +206,16 @@ function showQuizPage() {
         })
     })
 
+
 }
 
 function showResultPage() {
-    console.log(user)
-    console.log(quiz)
-    console.log({attempted,correct,wrong,attempted})
- 
+    // console.log(user)
+    // console.log(quiz)
+    // console.log({attempted,correct,wrong,total:user.quiz_total_questions})
     homePage.classList.remove("show")
     quizPage.classList.remove("show")
     resultPage.classList.add("show")
- 
     document.querySelector(".username").innerText = user.name
     document.querySelector(".total_questions").innerText = user.quiz_total_questions
     document.querySelector(".attempted_questions").innerText = attempted
@@ -187,6 +228,7 @@ function showResultPage() {
 
 
 function restartQuiz() {
+    console.log("restarting quiz")
     selectedAnswer = null
     correctAnswer = null
     score = 0
@@ -194,7 +236,9 @@ function restartQuiz() {
     attempted = 0
     wrong = 0
     count = 0
+    // console.log(user)
     resultPage.classList.remove("show")
+    // homePage.classList.remove("show")
     quizPage.classList.add("show")
     startQuiz()
 
@@ -209,6 +253,41 @@ function goHome() {
     wrong = 0
     count = 0
     user = {}
+    document.querySelector("#username").value = ""
+    document.querySelector(".greet").innerText = "Welcome!"
     resultPage.classList.remove("show")
     quizPage.classList.remove("show")
+    homePage.classList.add("show")
 }
+
+// add auto submit fulctionality and shown counter for 10 seconds after
+
+
+    // resultPage.classList.remove("show")
+
+
+    function startTimerAndSubmit() {
+        let countdown = 10; // 10 seconds timer
+    
+        // Display countdown
+        // const timerElement = document.querySelector(".timer");
+
+        console.log(" Countdown started: " + countdown)
+        // timerElement.textContent = `Time remaining: ${countdown} seconds`;
+        document.querySelector(".timer").innerText = `${countdown}S `;
+        timer = setInterval(() => {
+            countdown--; // Decrease the timer by 1 second
+            // timerElement.textContent = `Time remaining: ${countdown} seconds`;
+        document.querySelector(".timer").innerText = `${countdown}S `;
+            console.log(countdown)
+            // When countdown reaches 0, submit the question
+            if (countdown <= 0) {
+                clearInterval(timer); // Clear the interval
+                nextQuestion()
+                console.log("count down completed successfully")
+            }
+        }, 1000); // Update every second
+
+//  clearTimeout(timer)
+        console.log("countdown Completed", countdown);
+    }

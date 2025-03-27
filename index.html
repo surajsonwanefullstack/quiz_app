@@ -8,9 +8,12 @@
 </head>
 <body>
     <div class="container">
-        <div class="home_page">
+        <div class="home_page show">
         <p class="title"> Quiz Application</p>
-        <img src="images/quiz.png" alt="logo">
+        <a href="https://testbook.com/">
+
+        <img src="assets/logo.png" alt="logo">
+        </a>
         <p class="greet">Welcome!</p>
         <input type="text" id="username" placeholder="Enter your name">
         <button id="userAddButton" onclick="addUser()">Enter</button>
@@ -21,9 +24,9 @@
 
         </div>
         <div class="quiz_page">
-            <p class="title"> HTML QUIZ </p>
+            <p class="title" id="quizTitle"> Test </p>
             <div class="info">
-                <p class="timers">Remaing Time : 10</p>
+                <p class="timer">Remaing Time : 10</p>
                 <p class="score">Score : 0</p>
                 <p class="questionNumber">(1/10)</p>
             </div>
@@ -39,8 +42,7 @@
             </ul>
                 
             <div class="buttonContainer">
-                <button id="nextButton" onclick="nextQuestion()">Next</button>
-                <button id="submitButton" onclick="submitQuiz()">Submit</button>
+                <button id="nextButton" class="button" onclick="nextQuestion()">Next</button>
             </div>
             
         </div>
